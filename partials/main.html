@@ -11,7 +11,7 @@
             <li><a>Album</a></li>
           </ul>
         </div><!-- /btn-group -->
-        <input type="text" class="form-control" aria-label="...">
+        <input id="searchbar" type="text" class="form-control" aria-label="...">
       </div><!-- /input-group -->
     </div><!-- /.col-lg-6 -->
   </div><!-- /.row -->
@@ -22,4 +22,10 @@
     this is the main page
     {{ albumTest }}
   </div>
+
+  <div ng-repeat="album in albums">
+    <h6>{{ album.name }}</h6>
+    
+  </div>
+
 </div>

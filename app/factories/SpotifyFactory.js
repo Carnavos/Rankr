@@ -39,7 +39,6 @@ app.factory("SpotifyFactory", function ($http, firebaseURL) {
         console.log(`SpotifyFactory specfic album Test`);
         $http
           // spotify api request url
-          // .get(`https://api.spotify.com/v1/artists/${tempAlbumId}/albums`)
           .get(`https://api.spotify.com/v1/albums/${albumId}`)
           .then(
             spotifyObject => resolve(spotifyObject),
