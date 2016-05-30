@@ -2,7 +2,6 @@
 
 app.factory("TwitterFactory", function ($q, $http, firebaseURL){
 
-    // cb.setBearerToken('AAAAAAAAAAAAAAAAAAAAAPGcvQAAAAAAI0DuBR5HqB8s2ULKJNU8JymUv9Y%3D6HiZp5vLjvwEgGB9HRFWMHMROrGkdJUOCbVynI0WLKQETGONkr');
 
     function getTweetIdExtremes (tweets) {
       let max = tweets[0].id,
