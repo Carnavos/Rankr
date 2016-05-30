@@ -28,6 +28,7 @@ app.controller("MainCtrl", [
     $scope.albumTest = '';
 
     $scope.albums = [];
+    $scope.compiledTweets
 
     let $searchbar = $('#searchbar');
 
@@ -35,20 +36,24 @@ app.controller("MainCtrl", [
       let searchTerm = $searchbar[0].value;
 
       SpotifyFactory.getArtistByString(searchTerm).then(function(albumObject) {
-        $scope.albumTest = albumObject;
-        $scope.$apply();
+        console.log("albumObject", albumObject);
+        $scope.albumTest = albumObject.data.name;
+        // $scope.$apply(); //not needed now?
+        getTweets(albumObject.data.artists[0].name)
       });
     });
 
 
     //think i will need to handle the multiple calls here instead of the factory to get more than 100 tweets
-
-    let statuses = TwitterFactory.getRecentTweets('tupac','all eyez on me', 'since', 'until').success(function(response) {
-          console.log("response from node backend API", response);
-          let text = "";
-          response.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
-          console.log("text", text);
-        });;
+    function getTweets (artist) {
+      TwitterFactory.getRecentTweets(artist,'PLACEHOLDER_ALBUM', 'SINCE_DATE', 'UNTIL_DATE').success(function(response) {
+            console.log("response from node backend API", response);
+            let text = "";
+            response.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
+            console.log("text", text);
+            $scope.compiledTweets = text;
+          });;
+    }
 
   }
 ]);

@@ -76,7 +76,7 @@ app.factory("SpotifyFactory", function ($http, firebaseURL) {
             console.log(`specific album date: `, albumObject.data.release_date);
             console.log(`specific album date precision: `, albumObject.data.release_date_precision);
             console.log(`albumObject.data.name: `, albumObject.data.name);
-            resolve(albumObject.data.name);
+            resolve(albumObject);
           },
           err => console.log(err)
         );
