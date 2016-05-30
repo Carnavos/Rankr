@@ -2,5 +2,7 @@
 .jshintrc
 bower_components
 node_modules
+backend/node_modules
+backend/env.js
 data.json
 twitter.js
