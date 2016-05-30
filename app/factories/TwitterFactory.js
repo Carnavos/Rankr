@@ -25,7 +25,7 @@ app.factory("TwitterFactory", function ($q, $http, firebaseURL){
     }
 
 
-    let data = { statuses: 
+  let data = { statuses: 
    [ { created_at: 'Sun May 29 23:32:17 +0000 2016',
        id: 737064046034190300,
        id_str: '737064046034190337',

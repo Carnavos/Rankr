@@ -13,7 +13,13 @@ app.factory("TextProcessingFactory", function ($q, $http, firebaseURL){
       //remove links
       text = text.replace(/(?:https?|bitly):\/\/[\n\S]+/g, ' ');
 
-      return text.trim();
+      text = text.toLowerCase().trim();
+
+      if (text.slice(-1) !== '.') {
+        text += '.'
+      }
+
+      return text
     } 
   }
 });
