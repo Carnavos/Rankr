@@ -23,7 +23,6 @@ app.controller("MainCtrl", [
    //  }
     
 
-
 		// sample 2Pac queries    
     $scope.testArtistString = 'tupac';
     $scope.albumTest = '';
@@ -42,21 +41,14 @@ app.controller("MainCtrl", [
     });
 
 
-    let statuses = TwitterFactory.getRecentTweets('tupac','all eyez on me', 300);
+    //think i will need to handle the multiple calls here instead of the factory to get more than 100 tweets
 
-    console.log("statuses", statuses);
-
-    let text = "";
-
-    statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
-
-    console.log("text", text);
-
-
-    $http.jsonp('http://localhost:3000/hello?callback=JSON_CALLBACK').success(function(response) {
-      console.log("response from node backend API", response);
-    })
-
+    let statuses = TwitterFactory.getRecentTweets('tupac','all eyez on me', 'since', 'until').success(function(response) {
+          console.log("response from node backend API", response);
+          let text = "";
+          response.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
+          console.log("text", text);
+        });;
 
   }
 ]);
