@@ -1,0 +1,26 @@
+{
+  "name": "Rankr",
+  "homepage": "https://github.com/Carnavos/Rankr",
+  "authors": [
+    "Theo Carnavos <tcarnavos@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "^2.2.4",
+    "angular": "^1.5.6",
+    "angular-route": "^1.5.6",
+    "firebase": "^3.0.3",
+    "angularfire": "^1.2.0",
+    "bootstrap": "^3.3.6"
+  }
+}

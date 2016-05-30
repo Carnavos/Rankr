@@ -1,0 +1,31 @@
+<div class="text-center">
+  <h1> RANKR </h1>
+
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+      <div class="input-group">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="">Artist</a></li>
+            <li><a>Album</a></li>
+          </ul>
+        </div><!-- /btn-group -->
+        <input id="searchbar" type="text" class="form-control" aria-label="...">
+      </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+  </div><!-- /.row -->
+
+  <button class="btn btn-default" id="search">Search</button>
+
+  <div>
+    this is the main page
+    {{ albumTest }}
+  </div>
+
+  <div ng-repeat="album in albums">
+    <h6>{{ album.name }}</h6>
+    
+  </div>
+
+</div>
