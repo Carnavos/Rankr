@@ -14,7 +14,7 @@ app.controller("MainCtrl", [
     // $scope.tempArtistId = "1ZwdS5xdxEREPySFridCfh";
     // $scope.tempAlbumId = "6IaWlt7CLWVONECmbU4OHp";
     $scope.testAlbumString = 'All Eyez on Me';
-
+    $scope.albumTest = '';
 
 
 
@@ -52,12 +52,14 @@ app.controller("MainCtrl", [
   		err => console.log(err)
 		);
 
+		//
 
-  	// SpotifyFactory getArtistByString test
+
+  	// SpotifyFactory getAlbumByString test
   	SpotifyFactory.getAlbumByString($scope.testAlbumString).then(
   		albumObject => {
 				console.log(`album by string: `, albumObject);
-				return SpotifyFactory.getAlbumDetailByAlbumId(albumsObject.data.items[0].id)
+				return SpotifyFactory.getAlbumDetailByAlbumId(albumObject.data.albums.items[0].id);
   		},
   		err => console.log(err)
 		)
@@ -67,6 +69,10 @@ app.controller("MainCtrl", [
 				console.log(`specific album name: `, albumObject.data.name);
 				console.log(`specific album date: `, albumObject.data.release_date);
 				console.log(`specific album date precision: `, albumObject.data.release_date_precision);
+				// test page variable
+				$scope.albumTest = albumObject.data.name;
+				$scope.$apply();
+				console.log(`$scope.albumTest: `, $scope.albumTest);
   		},
   		err => console.log(err)
 		);
