@@ -39,20 +39,53 @@ app.controller("MainCtrl", [
         console.log("albumObject", albumObject);
         $scope.albumTest = albumObject.data.name;
         // $scope.$apply(); //not needed now?
-        getTweets(albumObject.data.artists[0].name)
+        compileTweets(albumObject.data.artists[0].name)
       });
     });
 
 
-    //think i will need to handle the multiple calls here instead of the factory to get more than 100 tweets
-    function getTweets (artist) {
-      TwitterFactory.getRecentTweets(artist,'PLACEHOLDER_ALBUM', 'SINCE_DATE', 'UNTIL_DATE').success(function(response) {
-            console.log("response from node backend API", response);
-            let text = "";
-            response.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
-            console.log("text", text);
-            $scope.compiledTweets = text;
-          });;
+    //async task
+    let getOneHundredTweets = function (queryParams) {
+      return TwitterFactory.getRecentTweets(queryParams);
+      //   TwitterFactory.getRecentTweets(queryParams).success(function(response) {
+      //         console.log("response from node backend API", response);
+      //         let text = "";
+      //         response.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
+      //         console.log("text", text);
+      //         $scope.compiledTweets = text;
+      //       });;
+    }
+
+
+    let getTweets = function (fn) {
+      let iterator = fn();
+      let loop = result => {
+        !result.done && result.value.then(res =>
+          loop(iterator.next(res)));
+      };
+
+      loop(iterator.next());
+    }
+
+
+    let compileTweets = function (artist) {
+      let compiledList = [];
+      var queryParams = `${artist}`;
+
+      getTweets(function* () {
+        for (let i = 0; i < 2; i++){
+          console.log("queryPARAMS", queryParams);
+          let response = yield getOneHundredTweets(queryParams);
+          console.log("response", response);
+          if (response.data.statuses.length === 100) {
+            queryParams = response.data.search_metadata.next_results;
+          } else {
+            console.log("EMPTY STATUSES ARR");
+            break;
+          }
+        }
+      });
+
     }
 
   }
