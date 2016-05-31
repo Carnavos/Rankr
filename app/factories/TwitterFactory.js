@@ -35,12 +35,10 @@ app.factory("TwitterFactory", function ($q, $http, firebaseURL){
         max_id: 737663755945803775,
         include_entities: 1
       }
-
       ***************************************************/
 
       let queryArr = queryParams.split("&");
 
-      // ["?max_id=737704110082957311", "q=The%20Beatles", "count=100", "include_entities=1"]
       if (queryArr.length === 1) {
         //artist only
         parameters = {
@@ -61,12 +59,10 @@ app.factory("TwitterFactory", function ($q, $http, firebaseURL){
         }
       }
 
-
       return $http.jsonp(
                 'http://localhost:3000/tweets/recent?callback=JSON_CALLBACK', 
                 { params: parameters } 
               );
-
     }
   }
 

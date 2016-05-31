@@ -47,16 +47,10 @@ app.controller("MainCtrl", [
     //async task
     let getOneHundredTweets = function (queryParams) {
       return TwitterFactory.getRecentTweets(queryParams);
-      //   TwitterFactory.getRecentTweets(queryParams).success(function(response) {
-      //         console.log("response from node backend API", response);
-      //         let text = "";
-      //         response.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
-      //         console.log("text", text);
-      //         $scope.compiledTweets = text;
-      //       });;
     }
 
 
+    //takes a generator function as a parameter, then executes it and calls 'next' on the returned iterator until it's complete. Waits for that promise to resolve and passes the resolve value back
     let getTweets = function (fn) {
       let iterator = fn();
       let loop = result => {
@@ -74,6 +68,7 @@ app.controller("MainCtrl", [
       $scope.compiledTweets = "";
       var text = "";
 
+      //pass in generator function
       getTweets(function* () {
         for (let i = 0; i < 5; i++){
           // console.log("queryPARAMS", queryParams);
@@ -92,7 +87,6 @@ app.controller("MainCtrl", [
           }
         }
       });
-
     }
 
   }
