@@ -23,15 +23,26 @@ let appRouter = function(app) {
 
 
   app.get("/tweets/recent", function(req, res) {
-    // console.log("query string for twitter: ", req.query.q);
+
+    let params = {};
+
+    //loop through the req.query object
+      //build it back up in params except for the callback property
+    for (let key in req.query){
+      if (key !== "callback"){
+        params[key] = req.query[key];
+      }
+    }
+
+    //make call to twitter API
     client.get(
       'search/tweets',
-      {q: req.query.q,
-      count: req.query.count},
+      params,
       function(error, tweets, response) {
         res.jsonp(tweets);
     });
   });
+
 }
 
 module.exports = appRouter;

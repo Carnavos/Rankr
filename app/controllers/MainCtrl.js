@@ -28,7 +28,7 @@ app.controller("MainCtrl", [
     $scope.albumTest = '';
 
     $scope.albums = [];
-    $scope.compiledTweets
+    $scope.compiledTweets = "";
 
     let $searchbar = $('#searchbar');
 
@@ -71,13 +71,20 @@ app.controller("MainCtrl", [
     let compileTweets = function (artist) {
       let compiledList = [];
       var queryParams = `${artist}`;
+      $scope.compiledTweets = "";
+      var text = "";
 
       getTweets(function* () {
-        for (let i = 0; i < 2; i++){
-          console.log("queryPARAMS", queryParams);
+        for (let i = 0; i < 5; i++){
+          // console.log("queryPARAMS", queryParams);
           let response = yield getOneHundredTweets(queryParams);
           console.log("response", response);
-          if (response.data.statuses.length === 100) {
+
+          response.data.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
+
+          $scope.compiledTweets += text;
+
+          if (response.data.statuses.length > 0) {
             queryParams = response.data.search_metadata.next_results;
           } else {
             console.log("EMPTY STATUSES ARR");
