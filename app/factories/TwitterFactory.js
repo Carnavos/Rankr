@@ -24,17 +24,45 @@ app.factory("TwitterFactory", function ($q, $http, firebaseURL){
 
 
   return {
-    getRecentTweets(artistName, albumName, since, until ) {
-      // let twitterParams = `${artistName} OR ${albumName}&count=100&result_type=mixed`;
-      let twitterParams = `${artistName}`;
+    getRecentTweets(queryParams) {
+      let parameters;
+      /***************************************************
+      Ex. params object: ?max_id=737663755945803775&q=The%20Beatles&count=100&include_entities=1"
+      PARAMS OBJECT NEED TO BE BROKEN UP TO FORM:
 
-      return $http.jsonp('http://localhost:3000/tweets/recent?callback=JSON_CALLBACK', 
-                          { 
-                            params: { q: twitterParams,
-                                      count: 50} 
-                          } 
-                        );
+      { q: artist, 
+        count: 100,
+        max_id: 737663755945803775,
+        include_entities: 1
+      }
+      ***************************************************/
 
+      let queryArr = queryParams.split("&");
+
+      if (queryArr.length === 1) {
+        //artist only
+        parameters = {
+          q: queryArr[0],
+          count: 100,
+          lang: 'en',
+          result_type: 'mixed'
+        }
+      } else {
+        queryArr = queryArr.map( (p) => p.split("=")[1])
+        parameters = {
+          q: queryArr[1],
+          count: 100,
+          include_entities: queryArr[3],
+          max_id: queryArr[0],
+          lang: 'en',
+          result_type: 'mixed'
+        }
+      }
+
+      return $http.jsonp(
+                'http://localhost:3000/tweets/recent?callback=JSON_CALLBACK', 
+                { params: parameters } 
+              );
     }
   }
 

@@ -28,7 +28,7 @@ app.controller("MainCtrl", [
     $scope.albumTest = '';
 
     $scope.albums = [];
-    $scope.compiledTweets
+    $scope.compiledTweets = "";
 
     let $searchbar = $('#searchbar');
 
@@ -39,20 +39,54 @@ app.controller("MainCtrl", [
         console.log("albumObject", albumObject);
         $scope.albumTest = albumObject.data.name;
         // $scope.$apply(); //not needed now?
-        getTweets(albumObject.data.artists[0].name)
+        compileTweets(albumObject.data.artists[0].name)
       });
     });
 
 
-    //think i will need to handle the multiple calls here instead of the factory to get more than 100 tweets
-    function getTweets (artist) {
-      TwitterFactory.getRecentTweets(artist,'PLACEHOLDER_ALBUM', 'SINCE_DATE', 'UNTIL_DATE').success(function(response) {
-            console.log("response from node backend API", response);
-            let text = "";
-            response.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
-            console.log("text", text);
-            $scope.compiledTweets = text;
-          });;
+    //async task
+    let getOneHundredTweets = function (queryParams) {
+      return TwitterFactory.getRecentTweets(queryParams);
+    }
+
+
+    //takes a generator function as a parameter, then executes it and calls 'next' on the returned iterator until it's complete. Waits for that promise to resolve and passes the resolve value back
+    let getTweets = function (fn) {
+      let iterator = fn();
+      let loop = result => {
+        !result.done && result.value.then(res =>
+          loop(iterator.next(res)));
+      };
+
+      loop(iterator.next());
+    }
+
+
+    let compileTweets = function (artist) {
+      let compiledList = [];
+      var queryParams = `${artist}`;
+      $scope.compiledTweets = "";
+      var text = "";
+
+      //pass in generator function
+      getTweets(function* () {
+        for (let i = 0; i < 5; i++){
+          // console.log("queryPARAMS", queryParams);
+          let response = yield getOneHundredTweets(queryParams);
+          console.log("response", response);
+
+          response.data.statuses.forEach( (status) => text += TextFactory.formatTweetText(status.text) + " ");
+
+          $scope.compiledTweets += text;
+
+          if (response.data.statuses.length > 0) {
+            queryParams = response.data.search_metadata.next_results;
+          } else {
+            console.log("EMPTY STATUSES ARR");
+            break;
+          }
+        }
+      });
     }
 
   }
